@@ -18,7 +18,7 @@ render () {
         <Bd show={this.props.show} clicked={this.props.modalClosed}/>
             
         <div 
-        className={classes.Modal}
+            className={classes.Modal}
             style={{
             transform: this.props.show ? 'translateY(0)' : 'translate(-100vh)',
             opacity: this.props.show ? '1': '0'

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import Order  from '../../components/Order/Order';
 import axios from '../../Axios-orders';
 import withErrorHandler from '../../hoc/errorHandler';
@@ -6,40 +6,28 @@ import * as actions from '../../store/actions/indexA';
 import {connect} from 'react-redux';
 import Spinner from '../../components/UI/Spinner';
 
-class Orders extends Component {
+let Orders = (props) => {
     
-    componentDidMount() //because it will always be re-mounted so there is no need for componentDidUpdate()
-    {   
-        this.props.onFetchOrders(this.props.token, this.props.userId);
+    useEffect(()=> {
+        props.onFetchOrders(props.token, props.userId);
+    }, [])
+   
+    
+    let removeOrder = (id) => {
+        return props.onRemoveOrder(id);
     }
-    //list = [];
-    /* orders = {
-        for (let ord in this.state.orders){
-            //list.push([ord.ingredients]);
-            return <Order ingredients = {ord.ingredients}/>          
-        }
-    } */
-    removeOrder = (id) => {
-        return this.props.onRemoveOrder(id);
-    }
-    render() {
-/* my shot - stupid syntax error occurs which doesn't make sense
-        let orders = (
-            for (let ord in this.state.orders){
-                //list.push([ord.ingredients]);
-                return <Order ingredients = {ord.ingredients}/>          
-            };
-        ); */
-        let orders = <Spinner/>;
-        if (!this.props.loading) {
-            orders =(this.props.orders.map(order => (
-                <Order
-                    key = {order.id}
-                    ingredients = {order.ingredients}
-                    price = {order.price}
-                    deleteOrder = {() => this.removeOrder(order.id)}
-                />))       
-            );
+    
+    let orders = <Spinner/>;
+
+    if (!props.loading) {
+        orders =(props.orders.map(order => (
+            <Order
+              ingredients = {order.ingredients}
+              price = {order.price}
+              key = {order.id}
+              deleteOrder = {() => removeOrder(order.id)}
+            />))       
+          );
         } 
         return (
             <div>{/*my shot -  */}
@@ -47,7 +35,7 @@ class Orders extends Component {
                 {orders}
             </div>
         );
-    }
+    
 }
 
 const mapStateToProps = state => {

@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react'; //suspense has to wrap any react.lazy components
 import asyncComp from './hoc/asyncComponent';
 import Layout from './containers/Layout/Layout';
 //import bb from './containers/BurgerBuilder/BurgerBuilder';
@@ -10,29 +10,24 @@ import {connect} from 'react-redux';
 import * as actions from './store/actions/indexA';
 
 const Auth = React.lazy(() => import('./containers/Auth/Auth'));
+//does what was done manually with asyncComp
 
-const asyncCheckout = asyncComp( () => {
+const Checkout = React.lazy( () => {
   return import('./containers/Checkout/Checkout');
-})
+}) //fails with react.lazy....why?? (cannot read property 'path' of undefined??) -checkout.js - route - contact data (456 - explained 3:00) - added props to Route compoenent
 
-//Max approach (better)
-const asyncOrders = asyncComp( () => {
+
+const Orders = React.lazy( () => {
   return import('./containers/Orders/Orders');
 })
 
-class App extends Component {
-  /* state = {
-    show: true
-  }; */
- /*  componentDidMount(){
-    setTimeout(() => {
-      this.setState({show: false});
-    }, 5000);
-  }; */
-  componentDidMount () {
+const App = props => {
+  /* componentDidMount () {
     this.props.onTryAutoSignup();
-  }
-  render() {
+  } */
+useEffect( ()=> {
+  props.onTryAutoSignup();
+}, []);
 
     let routes =(
       <Switch> {/* picks the first hit */}
@@ -46,12 +41,12 @@ class App extends Component {
       </Switch>
     );
         //guards
-    if(this.props.isAuthenticated) {
+    if(props.isAuthenticated) {
       routes= ( 
         <Switch>
           <Route path='/' exact component={BurgerBuilder}/>
-          <Route path='/checkout' component={asyncCheckout}/>
-          <Route path='/orders' component ={asyncOrders}/>
+          <Route path='/checkout' component ={props => <Checkout {...props}/>}/>
+          <Route path='/orders' render={ props => <Orders {...props}/>}/>
           <Route path='/logout' component ={Logout}/>);
           <Route path='/auth' render={()=>(
             <Suspense fallback={<div>'lalala</div>}>
@@ -66,12 +61,15 @@ class App extends Component {
     return (
       <div>
         <Layout>
-          {routes}
+          <Suspense fallback={<p>wait a bit will ya</p>}>
+            {routes}
+          </Suspense>
         </Layout>
       </div>
     );
-  }
+  
 }
+
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.token !== null,

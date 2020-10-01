@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Order.module.css';
 
-const order = (props) => {//if it's just returning JSX we can use () after (props) =>, here we changed it to {} so we can put JSC in return() and tun some code before it
+const order = (props) => {//if it's just returning JSX we can use () after (props) =>, here we changed it to {} so we can put JSX in return() and put some code before it
     
     const ingredients = []; // we could've just copied transIng from Burger.js, but this is alternative
     for (let ingName in props.ingredients){
