@@ -21,4 +21,4 @@ const asyncComp = (importComponent) => {
         }
     }
 }
-export default asyncComp;
+export default asyncComp; 

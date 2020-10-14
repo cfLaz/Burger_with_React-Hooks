@@ -1,45 +1,43 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Aux from '../../../hoc/Auxilary';
 import Button from '../OrderSummary/Button/Button';
 
-class OrderS extends Component { //could convert this to functional component as we are just rendering stuff (would optimize the app more)
-    /* componentDidUpdate(){
-        console.log('OrderSummary did update')
-    } */
-    render(){
+const OrderS = props => { 
        
-        const ingSummary = Object.keys(this.props.ingredients)
-        .map(igKey =>{
-            return(
-            <li key={igKey}>
-                <span style={{textTransform: 'capitalize'}}>{igKey}</span>: {this.props.ingredients[igKey]}
-            </li>);
-        });
-            
-        return (
-            <Aux>
-                <h3>Ваша поруџбина</h3>
-                <p>Састојци бургера:</p>
-                <ul>
-                    {ingSummary}
-                </ul>
-                <p><strong>цијена: {this.props.price.toFixed(2)}</strong></p>
-                <p>Да наплатимо?</p>
-
-                <Button btnType='Danger' clicked={this.props.purchaseCanceled}>
-                    Не :(
-                </Button>
+    const ingSummary = Object.keys(props.ingredients)
+    .map(igKey =>{
+        return(
+        <li key={igKey}>
+            <span style={{textTransform: 'capitalize'}}>{igKey}</span>: {props.ingredients[igKey]}
+        </li>);
+      });
+        
+    return (
+     <Aux>
+        <h3>Ваша поруџбина</h3>
+        <p>Састојци бургера:</p>
+        <ul>
+         {ingSummary} 
+        </ul>
+         <p><strong>цијена: {props.price.toFixed(2)}</strong></p>
+         <p>Да наплатимо?</p>
+        
+        <Button 
+          btnType='Danger' 
+          clicked={props.purchaseCanceled}>
+          Не :(
+        </Button>
                 
-                <Button btnType='Success' 
-                clicked={this.props.purchaseContinued}
-                
-                >
-                    Да :)
-                </Button>
+        <Button 
+        btnType='Success' 
+        clicked={props.purchaseContinued}        
+        >
+        Да :)
+        </Button>
                     
-            </Aux>
-        );
-    }
+    </Aux>
+    );
+    
    
 };
 

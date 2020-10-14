@@ -22,12 +22,11 @@ const Orders = React.lazy( () => {
 })
 
 const App = props => {
-  /* componentDidMount () {
-    this.props.onTryAutoSignup();
-  } */
+ const {onTryAutoSignup} = props;
+
 useEffect( ()=> {
-  props.onTryAutoSignup();
-}, []);
+  onTryAutoSignup();
+}, [onTryAutoSignup]);
 
     let routes =(
       <Switch> {/* picks the first hit */}

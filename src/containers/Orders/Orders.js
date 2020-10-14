@@ -8,9 +8,11 @@ import Spinner from '../../components/UI/Spinner';
 
 let Orders = (props) => {
     
+    let {onFetchOrders,token,userId} = props;
+
     useEffect(()=> {
-        props.onFetchOrders(props.token, props.userId);
-    }, [])
+        onFetchOrders(token, userId);
+    }, [onFetchOrders,token,userId])
    
     
     let removeOrder = (id) => {
